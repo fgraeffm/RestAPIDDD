@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  db:
+   image: "mcr.microsoft.com/mssql/server:2017-latest"
+   container_name: sql-server-db
+   ports:
+      - 1433:1433
+   environment:
+      - SA_PASSWORD=yourStrong(!)Password
+      - MSSQL_PID=Developer
+      - ACCEPT_EULA='Y'
+
+
+  restapiddd.api:
+    image: ${DOCKER_REGISTRY-}restapiddd
+    ports:
+       - 4960:443
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
